@@ -27,10 +27,18 @@ ALLOWED_HOSTS = [
     "localhost",
 ]
 
+render_host = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
+
 CSRF_TRUSTED_ORIGINS = [
     "https://bronofficial.com",
     "https://www.bronofficial.com",
 ]
+
+if render_host:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{render_host}")
 
 # --- AUTHENTICATION BACKENDS ---
 AUTHENTICATION_BACKENDS = [
@@ -76,6 +84,7 @@ INSTALLED_APPS = [
 # --- MIDDLEWARE DEFINITION ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # Kept high up to eliminate preflight blocks
     'django.middleware.common.CommonMiddleware',
@@ -162,6 +171,12 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 
 # --- CORS & SECURITY POLICY ADJUSTMENTS ---
 CORS_ALLOW_ALL_ORIGINS = True

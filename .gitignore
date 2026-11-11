@@ -6,6 +6,7 @@ __pycache__/
 # Virtual Environment
 venv/
 .env
+.venv/
 
 # Django
 *.log
@@ -56,6 +57,7 @@ dump.rdb
 # Production/local generated files
 .env
 venv/
+.venv/
 static/
 __pycache__/
 *.pyc
